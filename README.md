@@ -1,4 +1,3 @@
-# demoavra"# attendance-system-and-report-analysis" 
 
 
 Attendance system and report analysis in PHP MySQL Angularjs|Attendance System Tutorial Free Code
