@@ -1,0 +1,147 @@
+@import url("spacetree.css");
+/*For space tree*/
+@import url("base.css");
+/*For space tree*/
+@import url("calender.css");
+/*For space tree*/
+@import url("calender_ui.css"); /*For space tree*/
+@font-face {
+    font-family: "Segoe UI";
+    src: url("http://www.myfontfree.com/data/54/s/segoe-ui/SEGOEUI.TTF");
+}
+
+@font-face {
+    font-family: segoe_uibold;
+    src: url(../fonts/segoeuib-webfont.eot);
+    src: url(../fonts/segoeuib-webfontd41d.eot?#iefix) format('embedded-opentype'), url(../fonts/segoeuib-webfont.woff) format('woff'), url(../fonts/segoeuib-webfont.ttf) format('truetype'), url(../fonts/segoeuib-webfont.svg#segoe_uibold) format('svg');
+    font-weight: 700;
+    font-style: normal
+}
+
+@font-face {
+    font-family: segoe_uiregular;
+    src: url(../fonts/segoeui-webfont.eot);
+    src: url(../fonts/segoeui-webfontd41d.eot?#iefix) format('embedded-opentype'), url(../fonts/segoeui-webfont.woff) format('woff'), url(../fonts/segoeui-webfont.ttf) format('truetype'), url(../fonts/segoeui-webfont.svg#segoe_uiregular) format('svg');
+    font-weight: 400;
+    font-style: normal
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: segoe_uiregular, Arial, sans-serif;
+    background-color: white;
+    color: #84838c;
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+
+    color:#0E4061;
+}
+
+ol, ul {
+    margin: 0px;
+}
+
+/*------------------------------------------------------header section*/
+
+.header {
+    margin-top: 30px;
+    padding: 0 16px;
+
+}
+
+/*---------------------------------------------footer section*/
+.footer {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    color: #84838c;
+    font-size: 16px;
+}
+
+.footer_link {
+    margin-right: 32px;
+}
+
+/*------------------------------------------------------home*/
+.learn-more {
+    border: 0;
+    outline: 0;
+    background: 0 0;
+    padding: 0 20px 0 0;
+    color: #2766ad !important;
+    margin-top: 20px;
+}
+
+.homesection {
+    padding: 10px 196px;
+
+}
+
+.rightfonts {
+    color: black;
+
+    text-align: center;
+}
+
+.second_section {
+    padding-right: 20px;
+    font-size: 18px;
+    line-height: 30px;
+
+}
+
+.second_section h2 {
+    color: #2766AD;
+}
+
+.third_section {
+    margin-top: 100px;
+    padding-right: 20px;
+    font-size: 18px;
+    line-height: 30px;
+}
+
+.third_section h2 {
+    color: #2766AD;
+    text-align: center;
+}
+
+.third_section p {
+    text-align: center;
+}
+
+.fourth_section {
+    margin-top: 100px;
+    padding-right: 20px;
+    font-size: 18px;
+    line-height: 30px;
+}
+
+.fourth_section h2 {
+    color: #2766AD;
+    text-align: left;
+}
+
+.fourth_section p {
+    text-align: left;
+}
+
+.margin140 {
+    margin-top: 140px;
+}
+
+.font_blue {
+    color: #2766AD;
+}
+
+.height
+{
+    max-height: 300px !important;
+    overflow-y: scroll;
+}

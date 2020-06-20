@@ -1,0 +1,3262 @@
+<NEWDATASET>
+    <ZLTWORK_USER>
+        <UNAME>ECC0458</UNAME>
+        <LT_ABAP>
+            <ABAPTXT255>
+                <LINE>
+                    START: Z_AQ_CHANGE_LOG FUNC
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>FUNCTION Z_AQ_CHANGE_LOG.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *"----------------------------------------------------------------------
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*"*"Local Interface:</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*" IMPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *" REFERENCE(DATEFROM) TYPE DATUM DEFAULT SY-DATUM
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*" CHANGING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*" REFERENCE(T_USERS) TYPE Z_USERS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*" REFERENCE(T_E071K) TYPE Z_E071K OPTIONAL</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*" REFERENCE(T_E070) TYPE Z_E070 OPTIONAL</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*" REFERENCE(T_E071) TYPE Z_E071 OPTIONAL</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *" REFERENCE(T_ABAPTXT255_TAB) TYPE ABAPTXT255_TAB OPTIONAL
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *" REFERENCE(T_TRDIR_IT) TYPE TRDIR_IT OPTIONAL
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *" REFERENCE(T_SMODILOGTB) TYPE SMODILOGTB OPTIONAL
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *" REFERENCE(T_TEXTPOOL) TYPE TEXTPOOL_TABLE OPTIONAL
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *"----------------------------------------------------------------------
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TYPE-POOLS: abap.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*Constants</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CONSTANTS: c_task_wb type TRFUNCTION value 'S'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CONSTANTS: c_task_cust type TRFUNCTION value 'Q'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CONSTANTS: c_modif_d type TRSTATUS value 'D'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CONSTANTS: c_modif_l type TRSTATUS value 'L'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CONSTANTS: c_modif_o type TRSTATUS value 'O'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CONSTANTS: c_modif_r type TRSTATUS value 'R'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CONSTANTS: c_modif_n type TRSTATUS value 'N'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: user type uname.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: objname type VERSOBJNAM.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: objname_rept type char34.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: t_e070_open type TABLE OF e070.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: t_e070_released type TABLE OF e070.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: t_e071_workbench type table of e071.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: t_e071k_custom type table of E071k.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: t_dd03v type TABLE OF dd03v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: t_dd02tv type TABLE OF dd02tv.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: t_dd02v type TABLE OF dd02v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: s_dd02v type dd02v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: t_config type ztt_config.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: s_config TYPE zlt_config.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: s_dd03v type dd03v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: s_dd02tv type dd02tv.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: s_e071k_custom type E071k.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: s_e071_workbench type e071.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: s_e070 type e070.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: s_abaptxt255 type abaptxt255.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: s_textpool type textpool.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: s_trdir type trdir.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: begin of ls_work,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>uname type uname,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lt_abap type abaptxt255_tab,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lt_trdir type trdir_it,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lt_dd04v type TABLE OF dd04v,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lt_dd01v type TABLE OF dd01v,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lt_dd07v type TABLE OF dd07v,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lt_dd02v type TABLE OF dd02v,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lt_dd03v type TABLE OF dd03v,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lt_dd40v TYPE TABLE OF dd40v,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lt_textpool type TABLE OF textpool,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lt_config type table of zlt_config,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>end of ls_work.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: ls_work_user like ls_work.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: tt_work_user type ZTTWORK_USER.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>select * FROM e070 INTO TABLE t_e070_open</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>where ( trfunction = c_task_wb</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OR trfunction = c_task_cust )</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>and ( trstatus = c_modif_d</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OR trstatus = c_modif_l ).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>select * FROM e070 INTO TABLE t_e070_released</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>where ( trfunction = c_task_wb</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OR trfunction = c_task_cust )</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>and ( trstatus = c_modif_o</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OR trstatus = c_modif_r</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OR trstatus = c_modif_n )</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    and as4date = sy-datum . "NOTE THIS SHOULD BE A PARAMETER IN THE FM
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>loop at t_users INTO user.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ls_work_user-uname = user.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear t_e071_workbench.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>refresh t_e071_workbench.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*Do workbench tansports first!</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *** find relevant transports being worked on or released today
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    loop at t_e070_open into s_e070 where as4user = user
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>AND trfunction = c_task_wb."Workbench only</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>select * from e071 into table t_e071_workbench</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>where trkorr = s_e070-trkorr.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>loop at t_e071_workbench into s_e071_workbench.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    "Note - if PROG - it is necessary to check both REPS and REPT
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"At the moment I am only checking REPS for PROG</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CASE s_e071_workbench-object.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>WHEN 'REPT'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>objname_rept = s_e071_workbench-obj_name.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: t_textpool[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: t_trdir_it[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_VERSION_REPT'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname_rept</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VERSNO = '99999'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>REPOT_TAB = T_TEXTPOOL</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TRDIR_TAB = T_TRDIR_IT</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 2.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>IF T_TEXTPOOL IS INITIAL.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_VERSION_REPT'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname_rept</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VERSNO = '00000'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>REPOT_TAB = T_TEXTPOOL</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TRDIR_TAB = T_TRDIR_IT</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 2.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CLEAR s_trdir.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>READ TABLE t_trdir_it INTO s_trdir INDEX 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    if s_trdir-udat ge datefrom "Only get reports from the date from
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>or s_trdir-cdat ge datefrom.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>loop at t_textpool into s_textpool.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * write: / s_textpool-id, s_textpool-id, s_textpool-entry.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    append lines of t_textpool to ls_work_user-lt_textpool.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    append LINES OF t_trdir_it to ls_work_user-lt_trdir.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    WHEN 'IDOC'. "IDOC type - Note there is no version managemnt
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    data: idoccreatedate type datum. "date of idoc create
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    data: idocchangedate type datum. "date of idoc change
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: idocedi_idoctp type EDI_IDOCTP. "idOC type</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>idocedi_idoctp = s_e071_workbench-obj_name.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    select single credate ldate from edbas into (idoccreatedate, idocchangedate)
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>where idoctyp = idocedi_idoctp</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>or credate = sy-datum</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>or ldate = sy-datum.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if sy-subrc ne 0.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CONTINUE.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write:/, 'IDoc Type'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if idoccreatedate = sy-datum.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * write: /, idocedi_idoctp, 'was created'.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if idocchangedate = sy-datum.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * write: /, idocedi_idoctp, 'was changed'.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>WHEN 'TTYP'. "TABLE TYPE</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: t_dd40v TYPE TABLE OF dd40v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: s_dd40v TYPE dd40v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: t_dd40v[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>objname = s_e071_workbench-obj_name.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_VERSION_TTYD_40'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VERSNO = '99999'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IMPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * INFO_LINE =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODISRC =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD40TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD40V_TAB = t_dd40v</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD42V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD43TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD43V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODILOG =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SYSTEM_FAILURE = 2</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>COMMUNICATION_FAILURE = 3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 4</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>IF t_dd40v is INITIAL.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_VERSION_TTYD_40'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VERSNO = '00000'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IMPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * INFO_LINE =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODISRC =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD40TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD40V_TAB = t_dd40v</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD42V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD43TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD43V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODILOG =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SYSTEM_FAILURE = 2</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>COMMUNICATION_FAILURE = 3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 4</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>READ TABLE t_dd40v INTO s_dd40v INDEX 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    if s_dd40v-as4date ge datefrom. "Check the date of the table created after datefrom
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write: / 'TABLE TYPE'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * write: / s_dd40V-typename, s_dd40v-ddtext, 'with linetype', s_dd40v-rowtype.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>append LINES OF t_dd40v to ls_work_user-lt_dd40v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>WHEN 'TABD' or 'TABL'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>objname = s_e071_workbench-obj_name.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: t_dd02tv[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: t_dd03v[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_VERSION_TABD_40'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VERSNO = '99999'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IMPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * INFO_LINE =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODISRC =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD02TV_TAB = t_dd02tv</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD02V_TAB = t_dd02v</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD03TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD03V_TAB = t_dd03v</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD05V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD08TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD08V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD35V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD36V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODILOG =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SYSTEM_FAILURE = 2</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>COMMUNICATION_FAILURE = 3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 4</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>IF t_dd02tv is INITIAL .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_VERSION_TABD_40'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VERSNO = '00000'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IMPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * INFO_LINE =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODISRC =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD02TV_TAB = t_dd02tv</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD02V_TAB = t_dd02v</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD03TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD03V_TAB = t_dd03v</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD05V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD08TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD08V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD35V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD36V_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODILOG =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SYSTEM_FAILURE = 2</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>COMMUNICATION_FAILURE = 3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 4</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>READ TABLE t_dd02tv INTO s_dd02tv INDEX 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>read table t_dd02v INTO s_dd02v INDEX 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if s_dd02v-as4date ge datefrom.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write: / 'Table'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * write: / s_dd02tv-tabname, s_dd02tv-ddtext.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>LOOP at t_dd03v INTO s_dd03v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * write: /, space, s_dd03v-fieldname.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>append LINES OF t_dd02v to ls_work_user-lt_dd02V.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>append LINES OF t_dd03v to ls_work_user-lt_dd03V.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>when 'FUGR'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"Function group - Step 1 - search the TOP</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"Global declarations, which is program name</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"L+FUGR+TOP. This can then be handled in the</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"same way as a report. Use the object type</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"REPS in the function modules!</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: programm type programm.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: objtype type VERSOBJTYP.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: t_funcname type TABLE OF funcname.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: funcname type funcname.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    CONCATENATE 'L' s_e071_workbench-obj_name 'TOP' INTO programm.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>objname = programm.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>objtype = 'REPS'. "Get the report not the FuGr</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * write: / 'FUNCTION GROUP', s_e071_workbench-obj_name.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: T_ABAPTXT255_TAB[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: T_TRDIR_IT[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_REPS_FROM_OBJECT'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_TYPE = objtype</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    VERSNO = '99999' "Modified not active
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* DESTINATION = ' '</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IV_NO_RELEASE_TRANSFORMATION = ' '</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>REPOS_TAB = T_ABAPTXT255_TAB</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TRDIR_TAB = T_TRDIR_IT</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODISRC =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODILOG =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 2.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IF SY-SUBRC <> 0.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if T_ABAPTXT255_TAB is initial.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_REPS_FROM_OBJECT'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_TYPE = objtype</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    VERSNO = '00000' "The active versions
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION = ' '
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION = ' '
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>REPOS_TAB = T_ABAPTXT255_TAB</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TRDIR_TAB = T_TRDIR_IT</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODISRC =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODILOG =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 2.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>Loop at t_abaptxt255_tab INTO s_abaptxt255.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write: / s_abaptxt255.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"Function group - Step 2 - search table TFDIR for</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"all function modules in the Function Group</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    "This is done by search TFDIR-pname = Function group
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SELECT funcname from tfdir INTO TABLE t_funcname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>where pname = s_e071_workbench-obj_name.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>loop at t_funcname into funcname.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>objname = funcname.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_REPS_FROM_OBJECT'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_TYPE = objtype</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    VERSNO = '99999' "Modified not active
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION = ' '
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION = ' '
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>REPOS_TAB = T_ABAPTXT255_TAB</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TRDIR_TAB = T_TRDIR_IT</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODISRC =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODILOG =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 2.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IF SY-SUBRC <> 0.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if T_ABAPTXT255_TAB is initial.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_REPS_FROM_OBJECT'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_TYPE = objtype</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    VERSNO = '00000' "The active versions
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION = ' '
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION = ' '
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>REPOS_TAB = T_ABAPTXT255_TAB</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TRDIR_TAB = T_TRDIR_IT</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODISRC =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODILOG =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 2.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>Loop at t_abaptxt255_tab INTO s_abaptxt255.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write: / s_abaptxt255.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    append LINES OF t_abaptxt255_tab to ls_work_user-lt_abap.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    append lines of t_trdir_it to ls_work_user-lt_trdir.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>when 'DOMA'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: t_dd01v type TABLE OF dd01v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: s_dd01v type dd01v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: t_dd07v type TABLE OF dd07v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>objname = s_e071_workbench-obj_name.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: t_dd01v[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_VERSION_DOMD_40'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VERSNO = '99999'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IMPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * INFO_LINE =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODISRC =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD01TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD01V_TAB = t_dd01v</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD07TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD07V_TAB = t_dd07v</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODILOG =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SYSTEM_FAILURE = 2</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>COMMUNICATION_FAILURE = 3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 4</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>IF t_dd01v is INITIAL.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_VERSION_DOMD_40'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VERSNO = '00000'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IMPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * INFO_LINE =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODISRC =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD01TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD01V_TAB = t_dd01v</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD07TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD07V_TAB = t_dd07v</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODILOG =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SYSTEM_FAILURE = 2</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>COMMUNICATION_FAILURE = 3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 4</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>READ TABLE t_dd01v INTO s_dd01v INDEX 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if s_dd01v-as4date ge datefrom.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>loop at t_dd01v INTO s_dd01v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write: /, 'Domain'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * WRITE: /, s_dd01v-domname, s_dd01v-datatype, s_dd01v-leng, s_dd01v-ddtext.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDLOOP.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>append LINES OF t_dd01v to ls_work_user-lt_dd01v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>append LINES OF t_dd07v to ls_work_user-lt_dd07v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>when 'DTEL'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: dd04v_tab type TABLE OF dd04v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: s_dd04v type dd04v.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>objname = s_e071_workbench-obj_name.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: dd04v_tab[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_VERSION_DTED_40'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VERSNO = '99999'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IMPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * INFO_LINE =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODISRC =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD04TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD04V_TAB = dd04v_tab</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODILOG =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SYSTEM_FAILURE = 2</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>COMMUNICATION_FAILURE = 3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 4</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>IF dd04v_tab is initial.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_VERSION_DTED_40'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VERSNO = '00000'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IMPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * INFO_LINE =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODISRC =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DD04TV_TAB =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DD04V_TAB = dd04v_tab</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * VSMODILOG =
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SYSTEM_FAILURE = 2</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>COMMUNICATION_FAILURE = 3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 4</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>READ TABLE dd04v_tab INTO s_dd04v index 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if s_dd04v-as4date ge datefrom.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>LOOP AT DD04V_TAB INTO S_DD04V.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* WRITE: /, 'Data Element'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * WRITE: /, S_DD04v-ROLLNAME, S_DD04v-DOMNAME, S_DD04v-DDTEXT.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDLOOP .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    append LINES OF dd04v_tab to ls_work_user-lt_dd04v.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>WHEN OTHERS.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if s_e071_workbench-object = 'PROG'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>s_e071_workbench-object = 'REPS'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>objname = s_e071_workbench-obj_name.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: T_ABAPTXT255_TAB[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear: T_TRDIR_IT[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_REPS_FROM_OBJECT'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    OBJECT_TYPE = s_e071_workbench-object
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    VERSNO = '99999' "Modified not active
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* DESTINATION = ' '</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IV_NO_RELEASE_TRANSFORMATION = ' '</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>REPOS_TAB = T_ABAPTXT255_TAB</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TRDIR_TAB = T_TRDIR_IT</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODISRC =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODILOG =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 2.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* IF SY-SUBRC <> 0.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if T_ABAPTXT255_TAB is initial.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'SVRS_GET_REPS_FROM_OBJECT'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OBJECT_NAME = objname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    OBJECT_TYPE = s_e071_workbench-object
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    VERSNO = '00000' "The active versions
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DESTINATION = ' '
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * IV_NO_RELEASE_TRANSFORMATION = ' '
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>REPOS_TAB = T_ABAPTXT255_TAB</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TRDIR_TAB = T_TRDIR_IT</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODISRC =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VSMODILOG =</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VERSION = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 2.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CLEAR s_trdir.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>READ TABLE t_trdir_it INTO s_trdir INDEX 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if s_trdir-udat ge datefrom</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>or s_trdir-cdat ge datefrom.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: lv_lines type i.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear s_abaptxt255.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>s_abaptxt255 = 'START:'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>s_abaptxt255+7(110) = objname.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>s_abaptxt255+117(4) = s_e071_workbench-object.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>insert s_abaptxt255 into t_abaptxt255_tab index 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lv_lines = lines( t_abaptxt255_tab ).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>lv_lines = lv_lines + 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear s_abaptxt255.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>s_abaptxt255 = 'FINISH:'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>s_abaptxt255+7(110) = objname.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>s_abaptxt255+117(4) = s_e071_workbench-object.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    insert s_abaptxt255 into t_abaptxt255_tab index lv_lines.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>Loop at t_abaptxt255_tab INTO s_abaptxt255.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write: / s_abaptxt255.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    append LINES OF t_abaptxt255_tab to ls_work_user-lt_abap.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    append LINES OF t_trdir_it to ls_work_user-lt_trdir.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDCASE.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *********************************************************
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* Customising</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *********************************************************
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    DATA: go_strucdescr TYPE REF TO cl_abap_structdescr.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: gt_tab_fields TYPE ddfields.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: begin of gs_where,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>condition(72).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: end of gs_where.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: gt_where like TABLE OF gs_where.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: gv_offset type i.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: gv_key_length type i.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: gv_key_found(1).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: lt_dba_sellist type TABLE OF VIMSELLIST.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: ls_dba_sellist TYPE VIMSELLIST.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>FIELD-SYMBOLS: <gwa_tab_field> TYPE dfies.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    loop at t_e070_open into s_e070 where as4user = user
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>AND trfunction = c_task_cust."Customsing only</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    clear gv_key_found. "This is used to indicate the view key was found in the customising tport
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>at first.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write: /, / 'Customising'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endat.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write / s_e070-trkorr.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>select * from e071k into table t_e071k_custom</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>where trkorr = s_e070-trkorr.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>loop at t_e071k_custom into s_e071k_custom.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CHECK s_e071k_custom-viewname is not initial.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * write:/ s_e071k_custom-mastername, s_e071k_custom-tabkey.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>gv_key_length = strlen( s_e071k_custom-tabkey ).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TRY .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* Get the details of the DDIC table</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    go_strucdescr ?= cl_abap_elemdescr=>describe_by_name( s_e071k_custom-viewname ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CATCH cx_sy_move_cast_error .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>MESSAGE 'Error while casting' TYPE 'S'. RETURN.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDTRY.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    gt_tab_fields = go_strucdescr->get_ddic_field_list( ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear gt_where[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>clear gv_offset.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    LOOP AT gt_tab_fields ASSIGNING <gwa_tab_field> WHERE keyflag = 'X'.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* WRITE: / <gwa_tab_field>-fieldname.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    CONCATENATE '''' <gwa_tab_field>-fieldname '''' INTO ls_dba_sellist-viewfield.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ls_DBA_SELLIST-OPERATOR = 'EQ'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"fill up where condition</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if sy-tabix = 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * CONCATENATE <gwa_tab_field>-fieldname space '=' space '''' s_e071k_custom-tabkey(<gwa_tab_field>-leng) '''' into gs_where.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    CONCATENATE '''' s_e071k_custom-tabkey(<gwa_tab_field>-leng) '''' into gs_where.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    CONCATENATE <gwa_tab_field>-fieldname ' = ' gs_where into gs_where RESPECTING BLANKS.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>else.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * CONCATENATE <gwa_tab_field>-fieldname '=' '''' s_e071k_custom-tabkey+gv_offset(<gwa_tab_field>-leng) '''' into gs_where.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * CONCATENATE 'AND ' gs_where into gs_where RESPECTING BLANKS.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    CONCATENATE '''' s_e071k_custom-tabkey+gv_offset(<gwa_tab_field>-leng) '''' into gs_where.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ls_dba_sellist-value = gs_where.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    CONCATENATE <gwa_tab_field>-fieldname ' = ' gs_where into gs_where RESPECTING BLANKS.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    CONCATENATE 'AND ' gs_where into gs_where RESPECTING BLANKS.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>add <gwa_tab_field>-leng to gv_offset.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>append gs_where to gt_where.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>append ls_dba_sellist to lt_dba_sellist.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDLOOP.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*Do dynamic select on the configuration key</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: dref TYPE REF TO data,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>itab_type TYPE REF TO cl_abap_tabledescr,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>struct_type TYPE REF TO cl_abap_structdescr,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>elem_type TYPE REF TO cl_abap_elemdescr,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    comp_tab TYPE cl_abap_structdescr=>component_table.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>FIELD-SYMBOLS : <lt_outtab> TYPE ANY TABLE.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    struct_type ?= cl_abap_typedescr=>describe_by_name( s_e071k_custom-viewname ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>comp_tab = struct_type->get_components( ).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    struct_type = cl_abap_structdescr=>create( comp_tab ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    itab_type = cl_abap_tabledescr=>create( struct_type ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CREATE DATA dref TYPE HANDLE itab_type.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ASSIGN dref->* TO <lt_outtab>.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: BEGIN OF lt_view_data OCCURS 1,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>c TYPE c LENGTH 8182, " max length</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>END OF lt_view_data .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: ls_view_data like lt_view_data.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL FUNCTION 'VIEW_GET_DATA'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>VIEW_NAME = s_e071k_custom-viewname</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * DBA_SELLIST = lt_dba_sellist ""NOTE THIS IS NOT WORKING
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA = lt_view_data</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_VIEWMAINT_TOOL = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_AUTHORITY = 2</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_AUTH_FOR_SEL = 3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA_ACCESS_RESTRICTED = 4</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>NO_FUNCTIONGROUP = 5</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>OTHERS = 6.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>IF SY-SUBRC <> 0.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* Implement suitable error handling here</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>loop at lt_view_data INTO ls_view_data.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    if ls_view_data-c(gv_key_length) = s_e071k_custom-tabkey.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>gv_key_found = 'X'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>s_config-e071k = s_e071k_custom.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>s_config-values = ls_view_data(2048).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>exit."Key found -</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* SELECT * from (s_e071k_custom-viewname)</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* INTO TABLE <lt_outtab></LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* WHERE (gt_where).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if gv_key_found = 'X'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>append s_config to t_config.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    exit. "The key to the customising transport is found
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    endloop. "All the customising tables belonging to a tr
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endloop. "all customissing transports for the user</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    append LINES OF t_config to ls_work_user-lt_config.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*********UPDATE THE USER TABLE WITH WB AND CONGIF</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>APPEND ls_work_user to tt_work_user.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>************************************************</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: gt_source_itab TYPE abap_trans_srcbind_tab,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>gs_source_wa TYPE abap_trans_resbind.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    CONSTANTS gv_file TYPE string VALUE 'C:\Users\pi063\Documents\ABAP to XML.xml'.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *DATA: gt_itab TYPE STANDARD TABLE OF char255.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    DATA: gt_itab TYPE STANDARD TABLE OF char2048.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: xml_result TYPE xstring .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: xml_result_string type string.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " GET REFERENCE OF ls_work_user INTO gs_source_wa-value.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" gs_source_wa-name = 'Resource'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" APPEND gs_source_wa TO gt_source_itab.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" CALL TRANSFORMATION id</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" SOURCE THISONE = ls_work_user</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" RESULT XML gt_itab.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    GET REFERENCE OF ls_work_user INTO gs_source_wa-value.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>gs_source_wa-name = 'Resource'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>APPEND gs_source_wa TO gt_source_itab.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    *call transformation ZABAP "id "zworktest "Z_AQ_CHANGE_LOG_TRANSFORMATION
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * source abaproot = t_abaptxt255_tab"s_dd02tv "tt_work_user
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* result XML gt_itab[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL TRANSFORMATION z_test3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>options XML_HEADER = 'NO'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SOURCE newdataset = tt_work_user[]</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>RESULT XML xml_result .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL TRANSFORMATION z_test3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>options XML_HEADER = 'NO'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SOURCE newdataset = tt_work_user[]</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>RESULT XML xml_result_string .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * cl_abap_browser=>show_xml( EXPORTING xml_xstring = xml_result ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * cl_abap_browser=>show_xml( EXPORTING xml_string = xml_result_string ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    DATA: gt_itab_out TYPE STANDARD TABLE OF char2048.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>constants: xmllen_res type i value 80.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>types: t_xmllin_res(xmllen_res) type c,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>t_xmltab_res type standard table of t_xmllin_res.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: xmltab_res type t_xmltab_res.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: size type i, i type i, l type i.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: s type string.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    data: path type localfile VALUE 'C:\Users\pi063\Documents\fileout.xml'.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>data: xmlstr_res type string.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>xmlstr_res = xml_result_string.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>s = path.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>size = strlen( xml_result_string ).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>i = 0.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>while i < size.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>l = size - i.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>if l > xmllen_res. l = xmllen_res. endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>append xmlstr_res+i(l) to xmltab_res.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>add l to i.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>endwhile.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* CALL FUNCTION 'GUI_DOWNLOAD'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* filename = s</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* filetype = 'ASC'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write_lf = ' '</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* data_tab = xmltab_res</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* others = 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>IF SY-SUBRC <> 0.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* Implement suitable error handling here</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    "*********************************************************
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"* Customising</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    "*********************************************************
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " DATA: go_strucdescr TYPE REF TO cl_abap_structdescr.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA: gt_tab_fields TYPE ddfields.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA: begin of gs_where,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" condition(72).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA: end of gs_where.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA: gt_where like TABLE OF gs_where.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA: gv_offset type i.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA: gv_key_length type i.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA: gv_key_found(1).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " DATA: lt_dba_sellist type TABLE OF VIMSELLIST.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA: ls_dba_sellist TYPE VIMSELLIST.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" FIELD-SYMBOLS: <gwa_tab_field> TYPE dfies.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " loop at t_e070_open into s_e070 where as4user = user
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " AND trfunction = c_task_cust."Customsing only
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " clear gv_key_found. "This is used to indicate the view key was found in the customising tport
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" at first.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" write: /, / 'Customising'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" endat.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" write / s_e070-trkorr.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " select * from e071k into table t_e071k_custom
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" where trkorr = s_e070-trkorr.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" loop at t_e071k_custom into s_e071k_custom.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " write:/ s_e071k_custom-mastername, s_e071k_custom-tabkey.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " gv_key_length = strlen( s_e071k_custom-tabkey ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" TRY .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"* Get the details of the DDIC table</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " go_strucdescr ?= cl_abap_elemdescr=>describe_by_name( s_e071k_custom-viewname ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" CATCH cx_sy_move_cast_error .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " MESSAGE 'Error while casting' TYPE 'S'. RETURN.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" ENDTRY.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " gt_tab_fields = go_strucdescr->get_ddic_field_list( ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" clear gt_where[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" clear gv_offset.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " LOOP AT gt_tab_fields ASSIGNING <gwa_tab_field> WHERE keyflag = 'X'.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" WRITE: / <gwa_tab_field>-fieldname.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " CONCATENATE '''' <gwa_tab_field>-fieldname '''' INTO ls_dba_sellist-viewfield.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" ls_DBA_SELLIST-OPERATOR = 'EQ'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" "fill up where condition</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" if sy-tabix = 1.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    "* CONCATENATE <gwa_tab_field>-fieldname space '=' space '''' s_e071k_custom-tabkey(<gwa_tab_field>-leng) '''' into gs_where.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " CONCATENATE '''' s_e071k_custom-tabkey(<gwa_tab_field>-leng) '''' into gs_where.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " CONCATENATE <gwa_tab_field>-fieldname ' = ' gs_where into gs_where RESPECTING BLANKS.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" else.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    "* CONCATENATE <gwa_tab_field>-fieldname '=' '''' s_e071k_custom-tabkey+gv_offset(<gwa_tab_field>-leng) '''' into gs_where.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    "* CONCATENATE 'AND ' gs_where into gs_where RESPECTING BLANKS.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " CONCATENATE '''' s_e071k_custom-tabkey+gv_offset(<gwa_tab_field>-leng) '''' into gs_where.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" ls_dba_sellist-value = gs_where.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " CONCATENATE <gwa_tab_field>-fieldname ' = ' gs_where into gs_where RESPECTING BLANKS.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " CONCATENATE 'AND ' gs_where into gs_where RESPECTING BLANKS.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" add <gwa_tab_field>-leng to gv_offset.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" append gs_where to gt_where.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " append ls_dba_sellist to lt_dba_sellist.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" ENDLOOP.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"*Do dynamic select on the configuration key</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" data: dref TYPE REF TO data,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " itab_type TYPE REF TO cl_abap_tabledescr,
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " struct_type TYPE REF TO cl_abap_structdescr,
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " elem_type TYPE REF TO cl_abap_elemdescr,
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " comp_tab TYPE cl_abap_structdescr=>component_table.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " FIELD-SYMBOLS : <lt_outtab> TYPE ANY TABLE.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " struct_type ?= cl_abap_typedescr=>describe_by_name( s_e071k_custom-viewname ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " comp_tab = struct_type->get_components( ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " struct_type = cl_abap_structdescr=>create( comp_tab ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " itab_type = cl_abap_tabledescr=>create( struct_type ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" CREATE DATA dref TYPE HANDLE itab_type.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" ASSIGN dref->* TO <lt_outtab>.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA: BEGIN OF lt_view_data OCCURS 1,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" c TYPE c LENGTH 8182, " max length</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" END OF lt_view_data .</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA: ls_view_data like lt_view_data.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" CALL FUNCTION 'VIEW_GET_DATA'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " VIEW_NAME = s_e071k_custom-viewname
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" TABLES</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    "* DBA_SELLIST = lt_dba_sellist ""NOTE THIS IS NOT WORKING
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA = lt_view_data</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" EXCEPTIONS</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" NO_VIEWMAINT_TOOL = 1</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" NO_AUTHORITY = 2</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" NO_AUTH_FOR_SEL = 3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" DATA_ACCESS_RESTRICTED = 4</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" NO_FUNCTIONGROUP = 5</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" OTHERS = 6.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" IF SY-SUBRC <> 0.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"* Implement suitable error handling here</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" ENDIF.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" loop at lt_view_data INTO ls_view_data.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " if ls_view_data-c(gv_key_length) = s_e071k_custom-tabkey.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" gv_key_found = 'X'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" exit."Key found -</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"* SELECT * from (s_e071k_custom-viewname)</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"* INTO TABLE <lt_outtab></LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>"* WHERE (gt_where).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" if gv_key_found = 'X'.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    " exit. "The key to the customising transport is found
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" endif.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>" endloop.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDLOOP. "The loop at t_users</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* to get the encoding we'll use standard XSLT ID</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * rather than ST - not required if you need Default UTF-8 from ST
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA :go_ixml TYPE REF TO if_ixml,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    go_stream_factory TYPE REF TO if_ixml_stream_factory,
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>go_encoding TYPE REF TO if_ixml_encoding,</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>go_resstream TYPE REF TO if_ixml_ostream.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>DATA: gv_final_xml_xstring TYPE xstring.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    CONSTANTS: gc_encoding TYPE string VALUE 'UTF-16'. "or UTF-8 etc.
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>go_ixml = cl_ixml=>create( ).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    go_stream_factory = go_ixml->create_stream_factory( ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    go_encoding = go_ixml->create_encoding( character_set = gc_encoding byte_order = 0 ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    go_resstream = go_stream_factory->create_ostream_XSTRING( gv_final_xml_xstring ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    CALL METHOD go_resstream->set_encoding( go_encoding ).
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>CALL TRANSFORMATION ID</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>SOURCE XML xml_result</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>RESULT XML go_resstream.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>cl_salv_data_services=>download_xml_to_file(</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>filename = 'C:\Users\Edlunda\fileout1.xml'</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>xcontent = gv_final_xml_xstring ).</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* data: lv_inbound type string.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * CALL METHOD CL_SALV_DATA_SERVICES=>UPLOAD_XML_FROM_FILE
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* EXPORTING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    * FILENAME = 'C:\Users\pi063\Documents\fileout1.xml'
+                </LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* RECEIVING</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* VALUE = lv_inbound.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* WRITE /.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* clear tt_work_user. refresh tt_work_user.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* CALL TRANSFORMATION z_test3</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* SOURCE XML lv_inbound</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* RESULT newdataset = tt_work_user[].</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>*</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>* write: /.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE/>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>ENDFUNCTION.</LINE>
+            </ABAPTXT255>
+            <ABAPTXT255>
+                <LINE>
+                    FINISH:Z_AQ_CHANGE_LOG FUNC
+                </LINE>
+            </ABAPTXT255>
+        </LT_ABAP>
+    </ZLTWORK_USER>
+</NEWDATASET>

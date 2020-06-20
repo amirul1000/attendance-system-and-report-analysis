@@ -1,0 +1,98 @@
+<div id="container">
+
+    <div id="center-container">
+        <div id="infovis"></div>
+    </div>
+
+    <div id="right-container">
+        <h4>Tree Orientation</h4>
+        <table class="table table-striped">
+            <tr>
+                <td>
+                    <label for="r-left">Left </label>
+                </td>
+                <td>
+                    <input type="radio" id="r-left" name="orientation" checked="checked" value="left"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="r-top">Top </label>
+                </td>
+                <td>
+                    <input type="radio" id="r-top" name="orientation" value="top"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Start Date </label>
+                </td>
+
+                <td>
+                    <input name="startDate" id="startDate" class="datepicker" data-date-format="yyyy-mm-dd" />
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <label>End Date </label>
+                </td>
+                <td>
+                    <input name="endDate" id="endDate" class="datepicker datepicker1" data-date-format="yyyy-mm-dd">
+                </td>
+
+            </tr>
+
+        </table>
+        <h4>Key Performance Indicators </h4>
+        <form name="calculateForm" novalidate>
+        <table class="table table-striped ">
+            <tr>
+                <td>
+                    <label style="font-size: 12px">Technical Activity Level </label>
+                </td>
+                <td>
+                    <select ng-model="sapactivitylevel">
+                        <option value="Very high">Very high</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                        <option value="None">None</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label style="font-size: 12px">Defects Resolved </label>
+                </td>
+                <td ng-class="{ 'has-error': calculateForm.defects.$invalid}">
+                    <input type="text" class="form-control" ng-model="defects" name="defects" ng-pattern="/^\d+$/" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label style="font-size: 12px">Undetected Hours</label>
+                </td>
+                <td ng-class="{ 'has-error': calculateForm.detectedTime.$invalid}">
+                    <input type="text" class="form-control" ng-model="detectedTime" name="detectedTime" ng-pattern="/^\d+$/" required>
+                </td>
+            </tr>
+            <td>
+                <a class="btn btn-primary btn-block col-md-offset-6" href="" ng-disabled="calculateForm.$invalid" ng-click="recalculate()">Recalculate</a>
+            </td>
+        </table>
+        </form>
+    </div>
+    <div id="left-container">
+        <img src="assets/images/logo.png" class="img-thumbnail logo" alt="noimg"/>
+
+        <h4 class="large_text">Welcome back {{userName}}!</h4>
+        <br>
+
+        <h4 class="latest_news"><a href="" class="text-center" style="font-size: 20px"> Help Links</a></h4>
+        <h5 class="latest_news1"><a href="http://avraquality.com/offshorereview.php">How to change the Date Range from
+            the default 7 days</a></h5>
+        <h5 class="latest_news1"><a href="http://www.avraquality.com/sapintegration.php">How to rank all resources</a>
+        </h5>
+    </div>

@@ -1,0 +1,56 @@
+<!--<script type="text/javascript">
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: ' Team Performance'
+            },
+            xAxis: {
+                categories: ['Jones','Brown','Davis','Miller','Wilson','Moore','Taylor ','White' ,'Martin','Harris',' Clark','Lee']
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Overall Performance'
+                }
+            },
+            legend: {
+                reversed: true
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: [{
+                name: 'Defect Resolution ',
+                data: [1, 2, 3, 4, 5, 6, 9, 8, 7, 10, 11, 12]
+            }, {
+                name: 'SAP Activity',
+                data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            }, {
+                name: 'Attendance',
+                data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            }
+            ]
+        });
+    });
+</script>-->
+
+<div class="container margin10A">
+    <a href="#/spacetree" class="btn btn-primary">Back</a>
+</div>
+<!--<div id="container" style="min-width: 310px; max-width: 1000px; height: 1200px; margin: 0 auto">
+</div>-->
+<div id="container" style="min-width: 310px; max-width: 1000px; height: 1200px; margin: 0 auto">
+  <bar-chart chart="bar"
+              title-text="Team Performance"
+              category="categorys"
+              y-axis-type="Overall Performance"
+              legend="true"
+              plot-Options="normal"
+              seriesdata="chartData">
+  </bar-chart>
+</div>
