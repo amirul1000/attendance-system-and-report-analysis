@@ -4,9 +4,8 @@ Attendance system and report analysis in PHP MySQL Angularjs|Attendance System T
 ================================================================================================
 
 
-Youtube Tutorial : https://youtu.be/LTgh7ax9Vgw
+Youtube Tutorial : https://youtu.be/oii4RFqxAXM
 
-Youtube Channel : https://www.youtube.com/channel/UC2Q4oWfoMQzi6AES8Vb2vQw?view_as=subscriber
 
 Donate to Paypal : patabuz@gmail.com
 
